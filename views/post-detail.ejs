@@ -15,7 +15,7 @@
             max-width: 100%;
             height: auto;
             border-radius: 1rem;
-            margin: 1.5rem 0;
+            margin: 1rem 0;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
         }
@@ -24,12 +24,12 @@
         }
         .prose p {
             line-height: 1.8;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             color: #2d3748;
         }
         .prose h2, .prose h3 {
-            margin-top: 2.5rem;
-            margin-bottom: 1.25rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
             color: #1a202c;
             font-weight: 700;
             position: relative;
@@ -47,9 +47,9 @@
         .post-image {
             max-width: 100%;
             height: auto;
-            border-radius: 1.25rem;
+            border-radius: 1rem;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            margin-bottom: 2.5rem;
+            margin-bottom: 1.5rem;
             object-fit: cover;
             transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
@@ -59,7 +59,7 @@
         }
         .article-container {
             background: #ffffff;
-            border-radius: 1.5rem;
+            border-radius: 1rem;
             overflow: hidden;
             position: relative;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -85,7 +85,7 @@
         .author-section {
             background: #f7fafc;
             border-radius: 0.75rem;
-            padding: 1.5rem;
+            padding: 1.25rem;
             transition: background 0.3s ease;
         }
         .author-section:hover {
@@ -98,12 +98,89 @@
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
+
+        /* Mobile-specific styles */
+        @media (max-width: 640px) {
+            .main-container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                max-width: 100%;
+            }
+            .article-container {
+                padding: 1.5rem;
+                border-radius: 0.75rem;
+            }
+            .title {
+                font-size: 2rem;
+                line-height: 2.5rem;
+                margin-bottom: 1.5rem;
+            }
+            .category-badge {
+                font-size: 0.65rem;
+                padding: 0.5rem 1rem;
+                border-radius: 0.5rem;
+            }
+            .text-gray-600 {
+                font-size: 0.75rem;
+            }
+            .flex.items-center {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+            .post-image {
+                margin-bottom: 1rem;
+                border-radius: 0.75rem;
+            }
+            .prose p {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+            .prose h2 {
+                font-size: 1.5rem;
+            }
+            .prose h3 {
+                font-size: 1.25rem;
+            }
+            .author-section {
+                padding: 1rem;
+                border-radius: 0.5rem;
+            }
+            .author-section p {
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Small tablets and larger phones */
+        @media (min-width: 641px) and (max-width: 768px) {
+            .main-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+            .article-container {
+                padding: 2rem;
+            }
+            .title {
+                font-size: 2.5rem;
+            }
+            .category-badge {
+                font-size: 0.75rem;
+                padding: 0.75rem 1.25rem;
+            }
+            .text-gray-600 {
+                font-size: 0.875rem;
+            }
+            .post-image {
+                margin-bottom: 1.25rem;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen antialiased">
     <div><%- include('partials/header copy 4.ejs') %></div>
-    <main class="container mx-auto px-4 py-16 max-w-4xl main-container">
-        <article class="article-container p-10">
+    <main class="container mx-auto px-4 py-12 max-w-4xl main-container">
+        <article class="article-container">
             <div class="flex items-center mb-8 space-x-4">
                 <span class="category-badge text-xs font-semibold px-4 py-2 rounded-full capitalize <%= 
                     post.category === 'Programming' ? 'bg-gradient-to-r from-blue-500 to-blue-700' : 
@@ -124,11 +201,11 @@
                 <img src="<%= post.image %>" alt="<%= post.title %>" class="post-image">
             <% } %>
             
-            <div class="prose prose-xl max-w-none text-gray-800 mb-10">
+            <div class="prose prose-lg max-w-none text-gray-800 mb-10">
                 <%- post.content.replace(/\n/g, '<br>') %>
             </div>
             
-            <div class="border-t border-gray-200 pt-8 author-section">
+            <div class="border-t border-gray-200 pt-6 author-section">
                 <p class="text-gray-700 text-base">
                     Written by <span class="font-semibold text-gray-900"><%= post.author %></span>
                 </p>
@@ -139,6 +216,6 @@
         <div><%- include('partials/footer') %></div>
     </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>
