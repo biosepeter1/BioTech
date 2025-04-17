@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/loading.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -106,7 +105,6 @@
 </head>
 <div><%- include('partials/header copy 2.ejs') %></div>
 <body class="flex items-center justify-center min-h-screen">
-    <%- include('partials/loading') %>
     <div class="bg-particles"></div>
     <div class="container mx-auto px-4 py-8 max-w-md">
         <div class="form-container rounded-2xl p-8 animate-fadeIn">
@@ -240,8 +238,6 @@
             });
         });
     </script>
-
-<script src="/scripts/loading.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

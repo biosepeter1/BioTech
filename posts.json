@@ -1,12 +1,13 @@
 [
   {
     "id": 1744840060094,
-    "title": "Almost everyone has had Imposter Syndrome",
+    "title": "Almost everyone has had Imposter Syndrome!",
     "content": "Almost everyone has had Imposter Syndrome at some point in their life. I’m not smart enough for this — they’re so much better than me — I don’t deserve to be here. If you’ve had these thoughts, you’ve struggled with Imposter Syndrome, too. In college, I made myself the victim of Imposter Syndrome when I dropped out of a Computer Science major and instead graduated with a major in Biology.\r\n\r\nLess than 5 years after graduating, I started a job as one of two developers updating and maintaining a dynamic e-commerce site and am pursuing my Masters in Computer Science. This is the story of how I got from there to here, and I hope it reaches someone who, like me, gave into these thoughts and left behind their dream. I hope I can convince you that failure and struggle are necessary, guaranteed, and the first steps to growth.\r\n\r\nIf you want the TLDR of how to succeed on your journey to web developer, scroll to the end and read the section — So, You Want to be An Engineer?\r\n\r\nDipping a Toe in Bioinformatics\r\nIn my first year of college, one of the available electives in my Biology major was Python Programming in Biology. It was for beginners and I decided why not, let’s see what programming is all about. I’d never written a line of code in my life. In the middle of the course, we were given a project to write an executable Python program that would accept a DNA fragment and reverse it, trim it, and blast it through a database to come up with an organism name. I remember loudly cursing in my dorm room as test after test failed.\r\n\r\nThen came the moment — I rewrote one line and all the tests passed. As student who had learned all the hacks of digesting and spitting information out or plug-and-chugging through problems, it was the toughest challenge I’d ever been given and solving it brought on a moment of pure joy. I really liked that feeling. At the end of that semester I applied for and was accepted in dual enrollment in Computer Science. I wasn’t sure what I was going to do yet, but I loved Biology and Computer Science and wanted to explore both.\r\n",
     "author": "BigPete",
     "date": "April 16, 2025",
     "category": "Web Design",
-    "image": "/images/1744840060024-a Beautiful background.jpg"
+    "image": "/images/1744840060024-a Beautiful background.jpg",
+    "updatedAt": "2025-04-17T20:16:47.634Z"
   },
   {
     "id": 1744826082720,

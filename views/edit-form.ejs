@@ -22,7 +22,6 @@
     </style>
 </head>
 <div><%- include('partials/header copy.ejs') %></div>
-<%- include('partials/loading') %>
 <body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 flex items-center justify-center min-h-screen">
     <div class="container mx-auto px-4 py-8 max-w-2xl">
         <div class="bg-blue-800/70 backdrop-blur-lg rounded-2xl shadow-2xl p-8 animate-slideUp">
@@ -73,7 +72,7 @@
                            class="mt-1 w-full px-4 py-3 bg-white/10 text-white rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-cyan-500 file:text-white file:hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-300 transition-all duration-300">
                 </div>
                 <div class="flex justify-end space-x-3">
-                    <a href="/" class="px-4 py-2 bg-gray-600 text-white font-medium rounded-full hover:bg-gray-700 transition-colors duration-300">Cancel</a>
+                    <a href="/submit" class="px-4 py-2 bg-gray-600 text-white font-medium rounded-full hover:bg-gray-700 transition-colors duration-300">Cancel</a>
                     <button type="submit"
                             class="px-4 py-2 bg-cyan-500 text-white font-medium rounded-full hover:bg-cyan-600 transition-colors duration-300">
                         Update Post
@@ -82,7 +81,6 @@
             </form>
         </div>
     </div>
-    <script src="/scripts/loading.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

@@ -110,24 +110,6 @@ app.get("/signup", (req, res) => {
     res.render("signup");
 });
 
-// app.post("/signup", async (req, res) => {
-//     const { username, email, password } = req.body;
-
-//     if (!username || !email || !password) {
-//         return res.status(400).send("All fields are required");
-//     }
-
-//     const users = await loadUsers();
-
-//     if (users.find((user) => user.email === email)) {
-//         return res.status(400).send("Email already registered");
-//     }
-
-//     users.push({ username, email, password });
-//     await saveUsers(users);
-
-//     res.redirect("/login");
-// });
 
 app.post("/signup", async (req, res) => {
     const { username, email, password } = req.body;
@@ -187,10 +169,6 @@ app.get("/submit", async (req, res) => {
     delete req.session.newPostId;
 });
 
-// app.get("/submit", async (req, res) => {
-//     const posts = await loadPosts();
-//     res.render("index1", { posts });
-// });
 
 app.get("/posts/new", (req, res) => {
     res.render("login"); // Updated to render new.ejs, assuming login was a typo
@@ -229,31 +207,6 @@ app.post("/posts", upload.single("image"), async (req, res) => {
     res.redirect("/submit");
 });
 
-// app.post("/posts", upload.single("image"), async (req, res) => {
-//     const { title, content, author, category } = req.body;
-//     if (!title || !content) {
-//         return res.status(400).send("Title and content are required");
-//     }
-//     const posts = await loadPosts();
-//     const newPost = {
-//         id: Date.now(), // Keep your unique ID logic
-//         title,
-//         content,
-//         author: author || "Anonymous",
-//         date: new Date().toLocaleDateString("en-US", {
-//             year: "numeric",
-//             month: "long",
-//             day: "numeric",
-//         }),
-//         category: category || "General",
-//         image: req.file ? `/images/${req.file.filename}` : "/images/placeholder.jpg" // Added image field
-//     };
-//     posts.unshift(newPost); // Newest first
-//     await savePosts(posts);
-
-//     req.flash("success", "🎉 Post published successfully!");
-//     res.redirect("/submit");
-// });
 
 app.get("/posts/:id", async (req, res) => {
     const posts = await loadPosts();
