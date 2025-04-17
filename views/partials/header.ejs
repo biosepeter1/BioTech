@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" id="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlogSpark</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        /* Custom Animations */
+        @keyframes pulse-slow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes slideUp { 0% { transform: translateY(20px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        @keyframes slideIn { 0% { transform: translateX(100%); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+        .animate-pulse-slow { animation: pulse-slow 3s ease-in-out infinite; }
+        .animate-slideUp { animation: slideUp 0.6s ease-out forwards; }
+        .animate-slideIn { animation: slideIn 0.3s ease-out forwards; }
+        .frosted-glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(8px); }
+        .category-badge { transition: all 0.3s ease; }
+        .category-badge:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        .post-card:hover .post-title { color: #3b82f6; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <header class="bg-gradient-to-r from-blue-900 via-cyan-600 to-gray-900 shadow-xl">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="/" class="text-3xl font-extrabold text-white hover:text-cyan-200 transition-colors duration-300 tracking-tight animate-pulse-slow">BioTech</a>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-white hover:text-cyan-200 font-medium transition-colors duration-300">All Posts</a>
+                    <a href="/posts/new" class="text-white hover:text-cyan-200 font-medium transition-colors duration-300">Creat New Post</a>
+                    <div class="relative">
+                        <input type="text" placeholder="Search posts..." class="bg-white/10 text-white placeholder-white/50 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-300 transition-all duration-300 w-48">
+                        <svg class="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <button id="dark-mode-toggle" class="text-white hover:text-cyan-200 transition-colors duration-300">
+                        <svg id="sun-icon" class="h-6 w-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="moon-icon" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                </nav>
+                <button id="mobile-menu-button" class="md:hidden text-white hover:text-cyan-200 focus:outline-none">
+                    <svg id="menu-icon" class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg id="close-icon" class="h-8 w-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden fixed top-0 right-0 h-[420px] w-2/3 sm:w-1/2 max-w-[280px] bg-blue-600/20 backdrop-blur-lg shadow-2xl transition-transform duration-300 ease-in-out translate-x-full z-50 animate-slideIn">
+                <nav class="flex flex-col space-y-4 px-4 py-8 relative">
+                    <button id="mobile-menu-close" class="absolute top-4 right-4 text-white hover:text-cyan-200 focus:outline-none">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <a href="/" class="text-white hover:bg-blue-700/80 font-semibold text-xl transition-all duration-300 py-3 rounded-lg text-center">All Posts</a>
+                    <a href="/posts/new" class="text-white hover:bg-blue-700/50 font-semibold text-xl transition-all duration-300 py-3 rounded-lg text-center">New Post</a>
+                    <a href="/login" class="text-white hover:bg-blue-700/50 font-semibold text-xl transition-all duration-300 py-3 rounded-lg text-center">Login</a>
+                    <div class="pt-4">
+                        <input type="text" placeholder="Search posts..." class="w-full bg-white/10 text-white placeholder-white/50 rounded-full px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-300">
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main class="max-h-screen">
+        <div class="relative isolate overflow-hidden h-[600px] md:h-[700px] w-full">
+            <div class="relative w-full h-full">
+                <% if (posts && posts.length > 0) { %>
+                    <% const latestPosts = posts.slice(0, 5); %>
+                    <div id="slider" class="relative w-full h-full">
+                        <% latestPosts.forEach((post, index) => { %>
+                            <div class="slider-item absolute inset-0 transition-opacity duration-700 <%= index === 0 ? 'opacity-100' : 'opacity-0' %> bg-cover bg-center bg-no-repeat" style="background-image: url('<%= post.image || '/images/placeholder.jpg' %>')">
+                                <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4 sm:px-6 bg-black/20 backdrop-blur-sm">
+                                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3 tracking-tight drop-shadow-2xl"><%= post.title %></h1>
+                                    <p class="text-lg sm:text-xl md:text-2xl text-cyan-100 max-w-3xl mx-auto drop-shadow-lg"><%= post.content.substring(0, 100) %>...</p>
+                                    <a href="/posts/<%= post.id %>" class="mt-4 inline-block bg-cyan-500/90 backdrop-blur-sm text-white px-6 py-3 rounded-full font-semibold hover:bg-cyan-600 transition-colors duration-300">Read More</a>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                        <% latestPosts.forEach((_, index) => { %>
+                            <button class="slider-dot w-3 h-3 rounded-full <%= index === 0 ? 'bg-cyan-500' : 'bg-white/50' %> hover:bg-cyan-400 transition-colors duration-300" data-index="<%= index %>"></button>
+                        <% }) %>
+                    </div>
+                    <button id="prev-slide" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 p-2 rounded-full hover:bg-white/40 transition-colors duration-300">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button id="next-slide" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 p-2 rounded-full hover:bg-white/40 transition-colors duration-300">
+                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                <% } else { %>
+                    <div class="w-full h-full bg-cover bg-center bg-no-repeat" style="background-image: url('/images/placeholder.jpg')">
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-4 sm:px-6 bg-black/20 backdrop-blur-sm">
+                            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-3 tracking-tight drop-shadow-2xl">Discover Inspiring Stories</h1>
+                            <p class="text-lg sm:text-xl md:text-2xl text-cyan-100 max-w-3xl mx-auto drop-shadow-lg">Join our vibrant community to share and explore thoughts, ideas, and experiences.</p>
+                            <a href="/posts/new" class="mt-4 inline-block bg-cyan-500/90 backdrop-blur-sm text-white px-6 py-3 rounded-full font-semibold hover:bg-cyan-600 transition-colors duration-300">Start Writing</a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Slider
+            const slider = document.getElementById('slider');
+            const slides = slider?.querySelectorAll('.slider-item');
+            const dots = document.querySelectorAll('.slider-dot');
+            const prevButton = document.getElementById('prev-slide');
+            const nextButton = document.getElementById('next-slide');
+            let currentIndex = 0;
+
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('opacity-100', i === index);
+                    slide.classList.toggle('opacity-0', i !== index);
+                    slide.style.zIndex = i === index ? '10' : '0';
+                });
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('bg-cyan-500', i === index);
+                    dot.classList.toggle('bg-white/50', i !== index);
+                });
+                currentIndex = index;
+            }
+
+            if (slides?.length > 0) {
+                showSlide(0);
+                const autoSlide = setInterval(() => showSlide((currentIndex + 1) % slides.length), 5000);
+                dots.forEach(dot => dot.addEventListener('click', () => {
+                    clearInterval(autoSlide);
+                    showSlide(parseInt(dot.dataset.index));
+                }));
+                prevButton?.addEventListener('click', () => {
+                    clearInterval(autoSlide);
+                    showSlide((currentIndex - 1 + slides.length) % slides.length);
+                });
+                nextButton?.addEventListener('click', () => {
+                    clearInterval(autoSlide);
+                    showSlide((currentIndex + 1) % slides.length);
+                });
+            }
+
+            // Intersection Observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-slideUp');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.animate-slideUp').forEach(el => {
+                el.style.opacity = 0;
+                observer.observe(el);
+            });
+
+            // Mobile Menu
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('hidden');
+                menuIcon.classList.toggle('hidden');
+                closeIcon.classList.toggle('hidden');
+                mobileMenu.classList.toggle('translate-x-full');
+                mobileMenu.classList.toggle('translate-x-0');
+            }
+
+            mobileMenuButton.addEventListener('click', toggleMenu);
+            mobileMenuClose.addEventListener('click', toggleMenu);
+            mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', toggleMenu));
+
+            
+
+            // Dark Mode
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            const htmlElement = document.getElementById('html');
+
+            darkModeToggle.addEventListener('click', () => {
+                htmlElement.classList.toggle('dark');
+                sunIcon.classList.toggle('hidden');
+                moonIcon.classList.toggle('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

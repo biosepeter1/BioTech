@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" id="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - BlogSpark</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/loading.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#3b82f6',
+                        'primary-dark': '#2563eb',
+                        'accent': '#22d3ee',
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3a8a, #6b21a8);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            animation: float 6s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+        .form-container:hover {
+            transform: translateY(-5px);
+        }
+        input {
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            border-color: #22d3ee;
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+            transform: scale(1.02);
+        }
+        button {
+            background: linear-gradient(45deg, #3b82f6, #22d3ee) !important;
+            position: relative;
+            overflow: hidden;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        button:hover::before {
+            left: 100%;
+        }
+        .title {
+            background: linear-gradient(to right, #ffffff, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><circle cx="10" cy="10" r="2" fill="rgba(255,255,255,0.3)"/></svg>') repeat;
+            animation: particleMove 20s linear infinite;
+        }
+        @keyframes particleMove {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+    </style>
+</head>
+<div><%- include('partials/header copy 2.ejs') %></div>
+<body class="flex items-center justify-center min-h-screen">
+    <%- include('partials/loading') %>
+    <div class="bg-particles"></div>
+    <div class="container mx-auto px-4 py-8 max-w-md">
+        <div class="form-container rounded-2xl p-8 animate-fadeIn">
+            <h1 class="text-4xl font-bold text-center mb-6 title">Join BioTech</h1>
+            <form id="signupForm" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-100">Username</label>
+                    <input type="text" id="username" name="username" required
+                           class="mt-1 w-full px-4 py-3 text-white placeholder-gray-300 rounded-full focus:outline-none transition-all duration-300"
+                           placeholder="Your username">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-100">Email</label>
+                    <input type="email" id="email" name="email" required
+                           class="mt-1 w-full px-4 py-3 text-white placeholder-gray-300 rounded-full focus:outline-none transition-all duration-300"
+                           placeholder="Your email">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-100">Password</label>
+                    <input type="password" id="password" name="password" required
+                           class="mt-1 w-full px-4 py-3 text-white placeholder-gray-300 rounded-full focus:outline-none transition-all duration-300"
+                           placeholder="Your password">
+                </div>
+                <button type="submit"
+                        class="w-full text-white py-3 rounded-full font-semibold transition-all duration-300">
+                    Sign Up
+                </button>
+            </form>
+            <p class="mt-6 text-center text-sm text-gray-100">
+                Already have an account?
+                <a href="/login" class="text-accent hover:underline">Log In</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('signupForm');
+            
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Signing Up...';
+
+                try {
+                    const formData = {
+                        username: form.username.value,
+                        email: form.email.value,
+                        password: form.password.value
+                    };
+
+                    const response = await fetch('/signup', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        navigator.vibrate?.(100);
+                        new Audio('https://notificationsounds.com/storage/sounds/file-sounds-1157-pristine.mp3').play();
+
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: result.message || 'Account created!',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showClass: {
+                                popup: 'animate__animated animate__fadeInRight'
+                            },
+                            hideClass: {
+                                popup: 'animate__animated animate__fadeOutRight'
+                            },
+                            didClose: () => {
+                                window.location.href = '/login';
+                            }
+                        });
+
+                    } else if (response.status === 400) {
+                        navigator.vibrate?.([100, 50, 100]);
+                        new Audio('https://notificationsounds.com/storage/sounds/file-sounds-1156-bell-notification.mp3').play();
+
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: result.message || 'Invalid input',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showClass: {
+                                popup: 'animate__animated animate__fadeInLeft'
+                            },
+                            hideClass: {
+                                popup: 'animate__animated animate__fadeOutLeft'
+                            }
+                        });
+                    } else {
+                        throw new Error(result.message || 'Signup failed');
+                    }
+
+                } catch (error) {
+                    navigator.vibrate?.([100, 100, 100]);
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: error.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInLeft'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutLeft'
+                        }
+                    });
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Sign Up';
+                }
+            });
+        });
+    </script>
+
+<script src="/scripts/loading.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

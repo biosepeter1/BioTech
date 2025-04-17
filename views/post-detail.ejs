@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= post.title %></title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/loading.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Poppins', sans-serif;
+        }
+        .prose img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+        .prose img:hover {
+            transform: scale(1.02);
+        }
+        .prose p {
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+        }
+        .prose h2, .prose h3 {
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
+            color: #1a202c;
+            font-weight: 700;
+            position: relative;
+        }
+        .prose h2::before, .prose h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -0.25rem;
+            width: 50px;
+            height: 4px;
+            background: linear-gradient(to right, #4f46e5, #60a5fa);
+            border-radius: 2px;
+        }
+        .post-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2.5rem;
+            object-fit: cover;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .post-image:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+        }
+        .article-container {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .article-container:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        .category-badge {
+            background: linear-gradient(45deg, #4f46e5, #60a5fa);
+            color: white;
+            transition: transform 0.2s ease;
+        }
+        .category-badge:hover {
+            transform: scale(1.05);
+        }
+        .title {
+            background: linear-gradient(to right, #1a202c, #4a5568);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .author-section {
+            background: #f7fafc;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            transition: background 0.3s ease;
+        }
+        .author-section:hover {
+            background: #edf2f7;
+        }
+        .main-container {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen antialiased">
+    <div><%- include('partials/header copy 4.ejs') %></div>
+    <%- include('partials/loading') %>
+    <main class="container mx-auto px-4 py-16 max-w-4xl main-container">
+        <article class="article-container p-10">
+            <div class="flex items-center mb-8 space-x-4">
+                <span class="category-badge text-xs font-semibold px-4 py-2 rounded-full capitalize <%= 
+                    post.category === 'Programming' ? 'bg-gradient-to-r from-blue-500 to-blue-700' : 
+                    post.category === 'Web Design' ? 'bg-gradient-to-r from-green-500 to-green-700' : 
+                    post.category === 'Technology' ? 'bg-gradient-to-r from-yellow-500 to-yellow-700' : 
+                    'bg-gradient-to-r from-gray-500 to-gray-700'
+                %>">
+                    <%= post.category %>
+                </span>
+                <span class="text-gray-600 text-sm font-medium">
+                    <%= new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                </span>
+            </div>
+            
+            <h1 class="text-5xl font-bold mb-8 leading-tight title"><%= post.title %></h1>
+            
+            <% if (post.image) { %>
+                <img src="<%= post.image %>" alt="<%= post.title %>" class="post-image">
+            <% } %>
+            
+            <div class="prose prose-xl max-w-none text-gray-800 mb-10">
+                <%- post.content.replace(/\n/g, '<br>') %>
+            </div>
+            
+            <div class="border-t border-gray-200 pt-8 author-section">
+                <p class="text-gray-700 text-base">
+                    Written by <span class="font-semibold text-gray-900"><%= post.author %></span>
+                </p>
+            </div>
+        </article>
+    </main>
+    <footer>
+        <div><%- include('partials/footer') %></div>
+    </footer>
+
+    <script src="/scripts/loading.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

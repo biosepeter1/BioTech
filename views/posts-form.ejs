@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" id="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Post - BlogSpark</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/styles/loading.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slideUp {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        .bg-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    <div><%- include('partials/header copy.ejs') %></div>
+    <%- include('partials/loading') %>
+    <div class="flex items-center justify-center min-h-screen py-12">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <div class="bg-gradient rounded-3xl shadow-2xl p-10 animate-slideUp">
+                <h1 class="text-4xl font-bold text-white text-center mb-8 tracking-tight">Craft Your Blog Post</h1>
+                <form action="/posts" method="POST" enctype="multipart/form-data" class="space-y-8">
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-100 mb-2">Post Title</label>
+                        <input type="text" id="title" name="title" required
+                               class="w-full px-5 py-3 bg-white/5 text-white placeholder-gray-400 rounded-lg border border-gray-600/30 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300"
+                               placeholder="Give your post a captivating title">
+                    </div>
+                    <div>
+                        <label for="content" class="block text-sm font-medium text-gray-100 mb-2">Content</label>
+                        <p class="text-xs text-gray-300 mb-3">Tip: Use **text** for bold, *text* for italics, or add # for headers.</p>
+                        <textarea id="content" name="content" required rows="8"
+                                  class="w-full px-5 py-3 bg-white/5 text-white placeholder-gray-400 rounded-lg border border-gray-600/30 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300"
+                                  placeholder="Share your story, ideas, or insights..."></textarea>
+                    </div>
+                    <div>
+                        <label for="author" class="block text-sm font-medium text-gray-100 mb-2">Author Name</label>
+                        <input type="text" id="author" name="author" required
+                               class="w-full px-5 py-3 bg-white/5 text-white placeholder-gray-400 rounded-lg border border-gray-600/30 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300"
+                               placeholder="Your name or pen name">
+                    </div>
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-100 mb-2">Category</label>
+                        <select id="category" name="category" required
+                                class="w-full px-5 py-3 bg-white/5 text-white rounded-lg border border-gray-600/30 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300">
+                            <option value="" disabled selected>Choose a category</option>
+                            <option value="Programming">Programming</option>
+                            <option value="Web Design">Web Design</option>
+                            <option value="Technology">Technology</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="image" class="block text-sm font-medium text-gray-100 mb-2">Featured Image</label>
+                        <input type="file" id="image" name="image" accept="image/*"
+                               class="w-full px-5 py-3 bg-white/5 text-white rounded-lg border border-gray-600/30 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-300">
+                    </div>
+                    <button type="submit"
+                            class="w-full bg-indigo-500 text-white py-3 rounded-lg font-semibold hover:bg-indigo-600 transition-colors duration-300 shadow-md">
+                        Publish Your Post
+                    </button>
+                </form>
+                <p class="mt-8 text-center text-sm text-gray-200">
+                    Back to <a href="/submit" class="text-indigo-300 hover:underline">Home</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/scripts/loading.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

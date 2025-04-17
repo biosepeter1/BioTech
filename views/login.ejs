@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" id="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - BlogSpark</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="/styles/loading.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 5px rgba(34, 211, 238, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(34, 211, 238, 0.7);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(34, 211, 238, 0.3);
+            }
+        }
+        .animate-slideUp {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+        .glow-effect {
+            animation: glow 2s ease-in-out infinite;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #22d3ee, #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .input-focus {
+            transition: all 0.3s ease;
+        }
+        .input-focus:focus {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-900 via-cyan-800 to-gray-900 transition-colors duration-500 flex items-center justify-center min-h-screen relative overflow-hidden">
+  <%- include('partials/loading') %>
+    <div class="absolute inset-0 bg-[url('https://source.unsplash.com/random/1920x1080?abstract')] opacity-20 bg-cover bg-center"></div>
+    <div class="container mx-auto px-4 py-8 max-w-md relative z-10">
+        <div class="bg-blue-900/80 backdrop-blur-xl rounded-3xl shadow-2xl p-10 animate-slideUp glow-effect border border-cyan-300/30">
+            <h1 class="text-4xl font-extrabold text-center mb-8 gradient-text">Welcome to BioTech Blog</h1>
+            <form action="/login" method="POST" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-cyan-100">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        placeholder="Enter your email"
+                        class="mt-2 w-full px-5 py-3 bg-white/5 text-white placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 input-focus border border-cyan-400/30"
+                    />
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-cyan-100">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        placeholder="Enter your password"
+                        class="mt-2 w-full px-5 py-3 bg-white/5 text-white placeholder-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-400 input-focus border border-cyan-400/30"
+                    />
+                </div>
+                <button
+                    type="submit"
+                    class="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105"
+                >
+                    Log In
+                </button>
+            </form>
+            <p class="mt-6 text-center text-sm text-gray-200">
+                Don’t have an account?
+                <a href="/signup" class="text-cyan-300 hover:text-cyan-200 transition-colors duration-300">Sign Up</a>
+            </p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Logging in...';
+                const formData = {
+                    email: form.email.value,
+                    password: form.password.value
+                };
+                try {
+                    const response = await fetch('/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+                    const resultText = await response.text();
+                    if (response.ok) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Login successful!',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showClass: { popup: 'animate__animated animate__fadeInRight' },
+                            hideClass: { popup: 'animate__animated animate__fadeOutRight' },
+                            didClose: () => {
+                                window.location.href = '/submit';
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: resultText || 'Invalid email or password',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showClass: { popup: 'animate__animated animate__fadeInLeft' },
+                            hideClass: { popup: 'animate__animated animate__fadeOutLeft' }
+                        });
+                    }
+                } catch (err) {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: err.message || 'Login failed',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Log In';
+                }
+            });
+        });
+    </script>
+
+<script src="/scripts/loading.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

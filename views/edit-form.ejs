@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" id="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post - BlogSpark</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/styles/loading.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slideUp {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<div><%- include('partials/header copy.ejs') %></div>
+<%- include('partials/loading') %>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300 flex items-center justify-center min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <div class="bg-blue-800/70 backdrop-blur-lg rounded-2xl shadow-2xl p-8 animate-slideUp">
+            <h1 class="text-3xl font-extrabold text-white text-center mb-6">Edit Your Blog Post</h1>
+            <form action="/posts/<%= post.id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="space-y-6" id="editForm">
+                <div>
+                    <label for="title" class="block text-sm font-medium text-gray-200">Title</label>
+                    <input type="text" id="title" name="title" value="<%= post.title %>" required
+                           class="mt-1 w-full px-4 py-3 bg-white/10 text-white placeholder-gray-400 rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-300 transition-all duration-300"
+                           placeholder="Your post title">
+                </div>
+                <div>
+                    <label for="content" class="block text-sm font-medium text-gray-200">Content</label>
+                    <textarea id="content" name="content" rows="8" required
+                              class="mt-1 w-full px-4 py-3 bg-white/10 text-white placeholder-gray-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-300 transition-all duration-300"
+                              placeholder="Write your story..."><%
+                                // Strip HTML tags and preserve line breaks
+                                let plainContent = post.content
+                                    .replace(/<[^>]+>/g, '') // Remove HTML tags
+                                    .replace(/\r\n/g, '\n'); // Normalize line breaks
+                                %><%= plainContent %></textarea>
+                </div>
+                <div>
+                    <label for="author" class="block text-sm font-medium text-gray-200">Author</label>
+                    <input type="text" id="author" name="author" value="<%= post.author %>"
+                           class="mt-1 w-full px-4 py-3 bg-white/10 text-white placeholder-gray-400 rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-300 transition-all duration-300"
+                           placeholder="Your name">
+                </div>
+                <div>
+                    <label for="category" class="block text-sm font-medium text-gray-200">Category</label>
+                    <select id="category" name="category" required
+                            class="mt-1 w-full px-4 py-3 bg-white/10 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-300 transition-all duration-300">
+                        <option value="" disabled>Select a category</option>
+                        <option value="Programming" <%= post.category === 'Programming' ? 'selected' : '' %>>Programming</option>
+                        <option value="Web Design" <%= post.category === 'Web Design' ? 'selected' : '' %>>Web Design</option>
+                        <option value="Technology" <%= post.category === 'Technology' ? 'selected' : '' %>>Technology</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-200">Post Image</label>
+                    <% if (post.image) { %>
+                        <div class="mt-1 mb-2">
+                            <img src="<%= post.image %>" alt="Current post image" class="w-full h-48 object-cover rounded-lg">
+                            <p class="text-sm text-gray-300">Current image. Upload a new one to replace it.</p>
+                        </div>
+                    <% } %>
+                    <input type="file" id="image" name="image" accept="image/*"
+                           class="mt-1 w-full px-4 py-3 bg-white/10 text-white rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-cyan-500 file:text-white file:hover:bg-cyan-600 focus:outline-none focus:ring-2 focus:ring-cyan-300 transition-all duration-300">
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <a href="/" class="px-4 py-2 bg-gray-600 text-white font-medium rounded-full hover:bg-gray-700 transition-colors duration-300">Cancel</a>
+                    <button type="submit"
+                            class="px-4 py-2 bg-cyan-500 text-white font-medium rounded-full hover:bg-cyan-600 transition-colors duration-300">
+                        Update Post
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="/scripts/loading.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

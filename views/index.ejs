@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" id="html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BioTech</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/styles/loading.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+  <style>
+   
+
+    /* Component Styles */
+    .frosted-glass {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+    }
+    .post-card {
+      transition: all 0.3s ease;
+    }
+    .post-card:hover {
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+      transform: scale(1.03);
+    }
+    .post-card:hover .post-title {
+      color: #3b82f6;
+    }
+    .category-badge {
+      transition: all 0.3s ease;
+    }
+    .category-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<%- include('partials/loading') %>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+  <%- include('partials/header.ejs') %>
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <h2 class="text-2xl sm:text-4xl font-extrabold text-gray-800 dark:text-gray-100 mb-6 text-center relative pb-6">
+      Featured Stories
+      <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 animate-underline"></span>
+    </h2>
+    <% if (posts && posts.length > 0) { %>
+      <div class="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <% posts.forEach((post, index) => { %>
+          <div class="post-card bg-white dark:bg-gray-800 frosted-glass p-6 rounded-xl shadow-md hover:shadow-2xl hover:ring-2 hover:ring-blue-400/30 animate-slideUp" 
+               style="animation-delay: <%= index * 100 %>ms;">
+            <!-- Post Image -->
+            <div class="mb-4">
+              <img src="<%= post.image || '/images/placeholder.jpg' %>" alt="<%= post.title %>" 
+                   class="w-full h-48 object-cover rounded-lg">
+            </div>
+            
+            <div class="flex items-center mb-3">
+              <span class="bg-<%= 
+                post.category === 'Programming' ? 'blue' : 
+                post.category === 'Web Design' ? 'green' : 
+                post.category === 'Technology' ? 'cyan' : 
+                'gray'
+              %>-100 text-<%= 
+                post.category === 'Programming' ? 'blue' : 
+                post.category === 'Web Design' ? 'green' : 
+                post.category === 'Technology' ? 'cyan' : 
+                'gray'
+              %>-700 text-xs font-medium px-3 py-1 rounded-full category-badge">
+                <%= post.category %>
+              </span>
+              <span class="text-gray-500 dark:text-gray-400 text-sm ml-3">
+                <%= new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %>
+              </span>
+            </div>
+            
+            <h2 class="post-title text-xl font-semibold text-gray-800 dark:text-white mb-2">
+              <%= post.title %>
+            </h2>
+            
+            <p class="text-gray-600 dark:text-gray-300 mb-4 line-height-1.6">
+              <%= post.content.substring(0, 100) %>...
+            </p>
+            
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-500 dark:text-gray-400">
+                By <%= post.author || 'Anonymous' %>
+              </span>
+              <a href="/posts/<%= post.id %>" 
+                 class="inline-block bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all duration-300">
+                Read more →
+              </a>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="text-center py-12 animate-slideUp">
+        <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">No Stories Yet</h2>
+        <p class="text-gray-600 dark:text-gray-300 mb-6 max-w-md mx-auto">
+          Be the first to share your story with the BioTech community!
+        </p>
+        <a href="/posts/new" 
+           class="inline-block bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-medium py-2 px-6 rounded-lg shadow-md hover:from-blue-700 hover:to-cyan-600 transition-all duration-300">
+          Create Your First Post
+        </a>
+      </div>
+    <% } %>
+  </main>
+  <div><%- include('partials/footer.ejs') %></div>
+
+  <script src="/scripts/loading.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>
