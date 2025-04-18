@@ -212,7 +212,7 @@ app.get("/posts/:id", async (req, res) => {
     const posts = await loadPosts();
     const post = posts.find((post) => post.id === parseInt(req.params.id));
     if (!post) {
-        return res.status(404).send("Post not found");
+        return res.status(404).send("404");
     }
     res.render("post-detail", { post });
 });
@@ -221,7 +221,7 @@ app.get("/posts/:id/edit", async (req, res) => {
     const posts = await loadPosts();
     const post = posts.find((p) => p.id === parseInt(req.params.id));
     if (!post) {
-        return res.status(404).send("Post not found");
+        return res.status(404).send("404");
     }
     res.render("edit-form", { post }); // Updated to render edit.ejs
 });
@@ -260,7 +260,16 @@ app.delete("/posts/:id", async (req, res) => {
     req.flash("success", "Article deleted successfully!");
     res.redirect("/submit");
 });
+app.get('/about', (req, res) => {
+    res.render('about');
+  });
 
+  app.get('/contact', (req, res) => {
+    res.render('404');
+  });
+
+  
+  
 app.listen(port, () => {
     console.log(`Server is running on :${port}`);
 });
