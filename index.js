@@ -11,7 +11,7 @@ import session from "express-session";
 
 
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
