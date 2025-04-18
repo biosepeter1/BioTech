@@ -43,7 +43,7 @@
         }
         
         .post-card:hover .post-title {
-            color: #3b82f6;
+            color: #3b82f6; /* blue-500 */
         }
         
         .category-badge {
@@ -76,55 +76,6 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- Featured Post -->
-        <% if (posts.length > 0) { %>
-            <section class="mb-16 animate-fadeIn">
-                <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800 dark:text-gray-100 mb-6 text-center">
-                    Your Story
-                </h2>
-                <article class="frosted-glass rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">
-                    <div class="md:flex">
-                        <div class="md:w-1/3">
-                            <img src="<%= posts[0].image || '/images/placeholder.jpg' %>" alt="<%= posts[0].title %>" class="w-full h-64 md:h-full object-cover">
-                        </div>
-                        <div class="p-6 md:w-2/3">
-                            <div class="flex items-center mb-3">
-                                <span class="bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-medium px-3 py-1 rounded-full category-badge">
-                                    <%= posts[0].category %>
-                                </span>
-                                <span class="text-gray-500 dark:text-gray-400 text-sm ml-3">
-                                    <%= new Date(posts[0].date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
-                                </span>
-                            </div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2 post-title">
-                                <%= posts[0].title %>
-                            </h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-4">
-                                <%= posts[0].content.substring(0, 180) %>...
-                            </p>
-                            <div class="flex items-center justify-between">
-                                <span class="text-sm text-gray-500 dark:text-gray-400">
-                                    By <%= posts[0]?.author || 'Anonymous' %>
-                                </span>
-                                <div class="flex space-x-4">
-                                    <a href="/posts/<%= posts[0]?.id %>" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-md font-medium">
-                                        View
-                                    </a>
-                                    <a href="/posts/<%= posts[0]?.id %>/edit" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-md font-medium">
-                                        Edit
-                                    </a>
-                                    <form id="delete-form-<%= posts[0]?.id %>" action="/posts/<%= posts[0]?.id %>?_method=DELETE" method="POST">
-                                        <button type="button" onclick="confirmDelete('<%= posts[0]?.id %>')" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-md font-medium">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-            </section>
-        <% } %>
 
         <!-- Latest Posts -->
         <section class="animate-fadeIn">
@@ -133,14 +84,31 @@
             </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <% posts.forEach((post, index) => { %>
-                    <% const categoryColor = post.category === 'Programming' ? 'blue' : 
-                       post.category === 'Web Design' ? 'green' : 
-                       post.category === 'Technology' ? 'green' : 'gray' %>
                     <article class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md post-card">
                         <img src="<%= post.image || '/images/placeholder.jpg' %>" alt="<%= post.title %>" class="w-full h-48 object-cover rounded-t-lg">
                         <div class="p-5">
                             <div class="flex items-center mb-3">
-                                <span class="bg-<%= categoryColor %>-100 dark:bg-<%= categoryColor %>-900 text-<%= categoryColor %>-700 dark:text-<%= categoryColor %>-300 text-xs font-medium px-3 py-1 rounded-full category-badge">
+                                <span class="bg-<%= 
+                                    post.category === 'Programming' ? 'blue' : 
+                                    post.category === 'Web Design' ? 'green' : 
+                                    post.category === 'Technology' ? 'green' : 
+                                    'gray'
+                                %>-100 dark:bg-<%= 
+                                    post.category === 'Programming' ? 'blue' : 
+                                    post.category === 'Web Design' ? 'green' : 
+                                    post.category === 'Technology' ? 'green' : 
+                                    'gray'
+                                %>-900 text-<%= 
+                                    post.category === 'Programming' ? 'blue' : 
+                                    post.category === 'Web Design' ? 'green' : 
+                                    post.category === 'Technology' ? 'green' : 
+                                    'gray'
+                                %>-700 dark:text-<%= 
+                                    post.category === 'Programming' ? 'blue' : 
+                                    post.category === 'Web Design' ? 'green' : 
+                                    post.category === 'Technology' ? 'green' : 
+                                    'gray'
+                                %>-300 text-xs font-medium px-3 py-1 rounded-full category-badge">
                                     <%= post.category %>
                                 </span>
                                 <span class="text-gray-500 dark:text-gray-400 text-sm ml-3">
@@ -161,14 +129,16 @@
                                     <a href="/posts/<%= post.id %>" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-md font-medium">
                                         View
                                     </a>
-                                    <a href="/posts/<%= post.id %>/edit" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-md font-medium">
-                                        Edit
-                                    </a>
-                                    <form id="delete-form-<%= post.id %>" action="/posts/<%= post.id %>?_method=DELETE" method="POST">
-                                        <button type="button" onclick="confirmDelete('<%= post.id %>')" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-md font-medium">
-                                            Delete
-                                        </button>
-                                    </form>
+                                    <div class="flex space-x-4">
+                                        <a href="/posts/<%= post.id %>/edit" class="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-md font-medium">
+                                            Edit
+                                        </a>
+                                        <form id="delete-form-<%= post.id %>" action="/posts/<%= post.id %>?_method=DELETE" method="POST">
+                                            <button type="button" onclick="confirmDelete(<%= post.id %>)" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-md font-medium">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -176,10 +146,76 @@
                 <% }); %>
             </div>
         </section>
+        
+        <% if (success && success.length > 0) { %>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top',
+                        text: "<%= success[0] %>",
+                        icon: 'success',
+                        background: '#1e3a8a',
+                        color: '#fff',
+                        showConfirmButton: false,
+                        timer: 3500,
+                        timerProgressBar: true,
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        }
+                    });
+                });
+            </script>
+        <% } %>
+
+        <script>
+            function confirmDelete(postId) {
+                Swal.fire({
+                    title: '⚠️ Are you sure?',
+                    text: "This action cannot be undone!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc2626',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel',
+                    background: '#1e3a8a',
+                    color: '#fff',
+                    customClass: {
+                        popup: 'rounded-xl shadow-2xl border border-red-400'
+                    },
+                    showClass: {
+                        popup: 'animate__animated animate__fadeInDown'
+                    },
+                    hideClass: {
+                        popup: 'animate__animated animate__fadeOutUp'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const form = document.getElementById(`delete-form-${postId}`);
+                        if (form) {
+                            form.submit();
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Unable to find the delete form.',
+                                icon: 'error',
+                                background: '#1e3a8a',
+                                color: '#fff',
+                                confirmButtonColor: '#06b6d4'
+                            });
+                        }
+                    }
+                });
+            }
+        </script>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gradient-to-r from-blue-900 via-cyan-600 to-gray-900 dark:bg-gradient-to-r dark:from-gray-950 dark:via-cyan-800 dark:to-gray-950 text-gray-100 py-8">
+    <footer class="bg-gradient-to-r from-blue-900 via-cyan-600 to-gray-900 dark:bg-gradient-to-r dark:from-gray-950 dark:via-cyan-800 dark:to-gray-950 text-gray-100 py-8 footer-animation">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Social Media Icons -->
             <div class="flex justify-center space-x-6 mb-6 flex-wrap gap-4">
@@ -238,8 +274,7 @@
         // Back to Top Button
         document.addEventListener('DOMContentLoaded', () => {
             const backToTopButton = document.getElementById('back-to-top');
-            
-            // Scroll event listener
+
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 300) {
                     backToTopButton.classList.remove('opacity-0', 'invisible', 'translate-y-4');
@@ -249,97 +284,43 @@
                     backToTopButton.classList.remove('opacity-100', 'visible', 'translate-y-0');
                 }
             });
-            
-            // Click event listener
+
             backToTopButton.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
-            
-            // Trigger animations
+
+            // Animation trigger
             document.querySelectorAll('.animate-fadeIn, .animate-slideUp').forEach(el => {
                 el.style.opacity = 1;
                 el.style.transform = 'none';
             });
-
-            // Show success message if exists
-            const successMessages = <%- JSON.stringify(success || []) %>;
-            if (successMessages && successMessages.length > 0) {
-                showSuccessToast(successMessages[0]);
-            }
         });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        // Delete Confirmation
-        function confirmDelete(postId) {
-            Swal.fire({
-                title: '⚠️ Are you sure?',
-                text: "This action cannot be undone!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#dc2626',
-                cancelButtonColor: '#6b7280',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel',
-                background: '#1e3a8a',
-                color: '#fff',
-                customClass: {
-                    popup: 'rounded-xl shadow-2xl border border-red-400'
-                },
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const form = document.getElementById(`delete-form-${postId}`);
-                    if (form) {
-                        form.submit();
-                    } else {
-                        showErrorToast('Unable to find the delete form.');
-                    }
-                }
-            });
-        }
-
-        // Show success toast
-        function showSuccessToast(message) {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const success = <%- JSON.stringify(success || []) %>;
+        console.log('Success messages:', success);
+        if (success && success.length > 0) {
             Swal.fire({
                 toast: true,
                 position: 'top',
-                text: message,
+                text: success[0],
                 icon: 'success',
                 background: '#1e3a8a',
                 color: '#fff',
                 showConfirmButton: false,
                 timer: 3500,
                 timerProgressBar: true,
-                customClass: { popup: 'rounded-xl shadow-md border border-indigo-400' },
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                }
+                customClass: { popup: 'rounded-xl shadow-md border border-indigo-400' }
             });
+        } else {
+            console.log('No success message to display');
         }
-
-        // Show error toast
-        function showErrorToast(message) {
-            Swal.fire({
-                toast: true,
-                position: 'top',
-                text: message,
-                icon: 'error',
-                background: '#1e3a8a',
-                color: '#fff',
-                showConfirmButton: false,
-                timer: 3500,
-                timerProgressBar: true,
-                customClass: { popup: 'rounded-xl shadow-md border border-red-400' }
-            });
-        }
-    </script>
+    });
+</script>
 </body>
 </html>
