@@ -26,7 +26,7 @@
     <div class="container mx-auto px-4 py-8 max-w-2xl">
         <div class="bg-blue-800/70 backdrop-blur-lg rounded-2xl shadow-2xl p-8 animate-slideUp">
             <h1 class="text-3xl font-extrabold text-white text-center mb-6">Edit Your Blog Post</h1>
-            <form action="/posts/<%= post.id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="space-y-6" id="editForm">
+            <form action="/posts/<%= post.id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="space-y-6" id="edit-form">
                 <div>
                     <label for="title" class="block text-sm font-medium text-gray-200">Title</label>
                     <input type="text" id="title" name="title" value="<%= post.title %>" required
@@ -38,10 +38,9 @@
                     <textarea id="content" name="content" rows="8" required
                               class="mt-1 w-full px-4 py-3 bg-white/10 text-white placeholder-gray-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-300 transition-all duration-300"
                               placeholder="Write your story..."><%
-                                // Strip HTML tags and preserve line breaks
                                 let plainContent = post.content
-                                    .replace(/<[^>]+>/g, '') // Remove HTML tags
-                                    .replace(/\r\n/g, '\n'); // Normalize line breaks
+                                    .replace(/<[^>]+>/g, '')
+                                    .replace(/\r\n/g, '\n');
                                 %><%= plainContent %></textarea>
                 </div>
                 <div>
@@ -73,7 +72,7 @@
                 </div>
                 <div class="flex justify-end space-x-3">
                     <a href="/submit" class="px-4 py-2 bg-gray-600 text-white font-medium rounded-full hover:bg-gray-700 transition-colors duration-300">Cancel</a>
-                    <button type="submit"
+                    <button type="button" onclick="confirmUpdate()"
                             class="px-4 py-2 bg-cyan-500 text-white font-medium rounded-full hover:bg-cyan-600 transition-colors duration-300">
                         Update Post
                     </button>
@@ -81,6 +80,26 @@
             </form>
         </div>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmUpdate() {
+            Swal.fire({
+                title: 'Ready to Update?',
+                text: "Your changes will be saved!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#06b6d4',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Yes, update it!',
+                background: '#1e3a8a',
+                color: '#fff',
+                customClass: { popup: 'rounded-xl shadow-2xl border border-cyan-400' }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('edit-form').submit();
+                }
+            });
+        }
+    </script>
 </body>
 </html>
