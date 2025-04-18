@@ -87,9 +87,11 @@
                 By <%= post.author || 'Anonymous' %>
               </span>
               <a href="/posts/<%= post.id %>" 
-                 class="inline-block bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all duration-300">
+                class="inline-block bg-gradient-to-r from-blue-600 to-cyan-500 text-white text-sm font-medium py-2 px-4 rounded-lg hover:from-blue-700 hover:to-cyan-600 transition-all duration-300" 
+                target="_blank" rel="noopener noreferrer">
                 Read more →
-              </a>
+             </a>
+             
             </div>
           </div>
         <% }) %>
