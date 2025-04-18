@@ -3,55 +3,45 @@ import express from "express";
 import methodOverride from "method-override";
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from "fs/promises"; // For async file operations
-import multer from "multer"; // Added for image uploads
+import fs from "fs/promises";
+import multer from "multer";
 import flash from "connect-flash";
 import session from "express-session";
-
-
-
 
 const port = process.env.PORT || 3000;
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const usersFilePath = path.join(__dirname, "users.json");
+const postsFilePath = path.join(__dirname, "posts.json");
 
+// Initialize required files
+async function initializeFiles() {
+    try {
+        await fs.access(postsFilePath);
+    } catch {
+        await fs.writeFile(postsFilePath, '[]');
+    }
+    try {
+        await fs.access(usersFilePath);
+    } catch {
+        await fs.writeFile(usersFilePath, '[]');
+    }
+}
+
+// Session configuration
 app.use(session({
     secret: "your_secret_key",
     resave: false,
     saveUninitialized: true,
-  }));
-  
-  // Setup flash messages
-  app.use(flash());
-  
-  // Middleware to expose flash messages to all views
-  app.use((req, res, next) => {
+}));
+
+// Flash messages
+app.use(flash());
+app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     next();
-  });
-
-// Load users from JSON file
-async function loadUsers() {
-    try {
-        const data = await fs.readFile(usersFilePath, "utf8");
-        return JSON.parse(data);
-    } catch (err) {
-        console.error("Error loading users:", err);
-        return [];
-    }
-}
-
-// Save users to JSON file
-async function saveUsers(users) {
-    try {
-        await fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), "utf8");
-    } catch (err) {
-        console.error("Error saving users:", err);
-    }
-}
-
+});
 
 // Multer configuration for image uploads
 const storage = multer.diskStorage({
@@ -70,25 +60,44 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-app.set("view cache", false); // Disable caching, as discussed
+app.set("view cache", false);
 app.use(express.json());
 
+// Route logging middleware
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+});
 
-// Path to posts.json
-const postsFilePath = path.join(__dirname, "posts.json");
+// Data functions
+async function loadUsers() {
+    try {
+        const data = await fs.readFile(usersFilePath, "utf8");
+        return JSON.parse(data);
+    } catch (err) {
+        console.error("Error loading users:", err);
+        return [];
+    }
+}
 
-// Load posts from JSON file
+async function saveUsers(users) {
+    try {
+        await fs.writeFile(usersFilePath, JSON.stringify(users, null, 2), "utf8");
+    } catch (err) {
+        console.error("Error saving users:", err);
+    }
+}
+
 async function loadPosts() {
     try {
         const data = await fs.readFile(postsFilePath, "utf8");
         return JSON.parse(data);
     } catch (err) {
         console.error("Error loading posts:", err);
-        return []; // Return empty array if file doesn't exist
+        return [];
     }
 }
 
-// Save posts to JSON file
 async function savePosts(posts) {
     try {
         await fs.writeFile(postsFilePath, JSON.stringify(posts, null, 2), "utf8");
@@ -96,9 +105,6 @@ async function savePosts(posts) {
         console.error("Error saving posts:", err);
     }
 }
-
-// Users array (unchanged)
-// const users = [];
 
 // Routes
 app.get("/", async (req, res) => {
@@ -109,7 +115,6 @@ app.get("/", async (req, res) => {
 app.get("/signup", (req, res) => {
     res.render("signup");
 });
-
 
 app.post("/signup", async (req, res) => {
     const { username, email, password } = req.body;
@@ -157,21 +162,18 @@ app.post("/login", async (req, res) => {
         return res.status(401).send("Invalid email or password");
     }
 
-    // You can also set a session or token here if needed
     return res.status(200).send("Login successful");
 });
 
 app.get("/submit", async (req, res) => {
     const posts = await loadPosts();
-    const newPostId = req.session.newPostId || null; // Get newPostId from session
+    const newPostId = req.session.newPostId || null;
     res.render("index1", { posts, newPostId });
-    // Optional: Clear newPostId from session to avoid reuse
     delete req.session.newPostId;
 });
 
-
 app.get("/posts/new", (req, res) => {
-    res.render("login"); // Updated to render new.ejs, assuming login was a typo
+    res.render("login");
 });
 
 app.get("/posts", (req, res) => {
@@ -185,7 +187,7 @@ app.post("/posts", upload.single("image"), async (req, res) => {
     }
     const posts = await loadPosts();
     const newPost = {
-        id: Date.now(), // Keep your unique ID logic
+        id: Date.now().toString(), // ID as string
         title,
         content,
         author: author || "Anonymous",
@@ -197,20 +199,17 @@ app.post("/posts", upload.single("image"), async (req, res) => {
         category: category || "General",
         image: req.file ? `/images/${req.file.filename}` : "/images/placeholder.jpg"
     };
-    posts.unshift(newPost); // Newest first
+    posts.unshift(newPost);
     await savePosts(posts);
 
-    // Store the new post ID in the session
     req.session.newPostId = newPost.id;
-
     req.flash("success", "Article published successfully!");
     res.redirect("/submit");
 });
 
-
 app.get("/posts/:id", async (req, res) => {
     const posts = await loadPosts();
-    const post = posts.find((post) => post.id === parseInt(req.params.id));
+    const post = posts.find((post) => post.id === req.params.id); // String comparison
     if (!post) {
         return res.status(404).send("Post not found");
     }
@@ -219,16 +218,16 @@ app.get("/posts/:id", async (req, res) => {
 
 app.get("/posts/:id/edit", async (req, res) => {
     const posts = await loadPosts();
-    const post = posts.find((p) => p.id === parseInt(req.params.id));
+    const post = posts.find((p) => p.id === req.params.id); // String comparison
     if (!post) {
         return res.status(404).send("Post not found");
     }
-    res.render("edit-form", { post }); // Updated to render edit.ejs
+    res.render("edit-form", { post });
 });
 
 app.put("/posts/:id", upload.single("image"), async (req, res) => {
     const { title, content, author, category } = req.body;
-    const postId = parseInt(req.params.id);
+    const postId = req.params.id; // Keep as string
     let posts = await loadPosts();
     posts = posts.map((post) =>
         post.id === postId
@@ -238,7 +237,7 @@ app.put("/posts/:id", upload.single("image"), async (req, res) => {
                   content,
                   author: author || "Anonymous",
                   category: category || "General",
-                  image: req.file ? `/images/${req.file.filename}` : post.image, // Retain existing image if none uploaded
+                  image: req.file ? `/images/${req.file.filename}` : post.image,
                   updatedAt: new Date().toISOString(),
               }
             : post
@@ -246,21 +245,29 @@ app.put("/posts/:id", upload.single("image"), async (req, res) => {
     await savePosts(posts);
 
     req.session.newPostId = postId;
-
-    // Set flash message for update
     req.flash("success", "Article updated successfully!");
     res.redirect("/submit");
 });
 
 app.delete("/posts/:id", async (req, res) => {
+    const postId = req.params.id; // Keep as string
     let posts = await loadPosts();
-    posts = posts.filter((post) => post.id !== parseInt(req.params.id));
+    posts = posts.filter((post) => post.id !== postId);
     await savePosts(posts);
 
     req.flash("success", "Article deleted successfully!");
     res.redirect("/submit");
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on :${port}`);
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+
+// Initialize files and start server
+initializeFiles().then(() => {
+    app.listen(port, () => {
+        console.log(`Server is running on :${port}`);
+    });
 });
