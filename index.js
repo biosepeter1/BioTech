@@ -202,9 +202,7 @@ app.post("/posts", upload.single("image"), async (req, res) => {
 
     // Store the new post ID in the session
     req.session.newPostId = newPost.id;
-
-    req.flash("success", "Article published successfully!");
-    res.redirect("/index1");
+    res.redirect("/submit");
 });
 
 
@@ -248,8 +246,7 @@ app.put("/posts/:id", upload.single("image"), async (req, res) => {
     req.session.newPostId = postId;
 
     // Set flash message for update
-    req.flash("success", "Article updated successfully!");
-    res.redirect("/index1");
+    res.redirect("/submit");
 });
 
 app.delete("/posts/:id", async (req, res) => {
@@ -257,8 +254,7 @@ app.delete("/posts/:id", async (req, res) => {
     posts = posts.filter((post) => post.id !== parseInt(req.params.id));
     await savePosts(posts);
 
-    req.flash("success", "Article deleted successfully!");
-    res.redirect("/index1");
+    res.redirect("/submit");
 });
 app.get('/about', (req, res) => {
     res.render('about');
